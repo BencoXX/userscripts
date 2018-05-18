@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name Toggle Messenger Sidebar Nice
-// @version 0.3
+// @version 0.4
 // @description Button to hide messengers list of conversations
 // @match https://www.messenger.com/*
 // @copyright 2018+, BenCOXXX
@@ -12,11 +12,12 @@
 
 $(document).ready(function() {
     var convThreads = document.getElementsByClassName("_1enh")[0];
-    $(convThreads).click(function() {
+	var refreshButton = function() {
 		$("#showHideButton").remove();
-		setTimeout(createShowHideButton);
-    });
-
+		setTimeout(createShowHideButton, 1000);
+    };
+    $(convThreads).click(refreshButton);
+	$(document).on('click', '._gs4', refreshButton);
     var createPosition = function(cls) {
         var prt = document.getElementsByClassName(cls)[0];
         var pos = $('<div class="_1cwz"></div>');
