@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name Toggle Messenger Sidebar Nice
-// @version 0.1
+// @version 0.2
 // @description Button to hide messengers list of conversations
 // @match https://www.messenger.com/*
 // @copyright 2018+, BenCOXXX
@@ -11,6 +11,11 @@
 // ==/UserScript==
 
 $(document).ready(function() {
+    var convThreads = document.getElementsByClassName("_1enh")[0];
+    $(convThreads).click(function() {
+        if($("#showHideButton").length == 0) createShowHideButton();
+    });
+
     var createPosition = function(cls) {
         var prt = document.getElementsByClassName(cls)[0];
         var pos = $('<div class="_1cwz"></div>');
@@ -22,33 +27,35 @@ $(document).ready(function() {
         img = img.replace('${alt}', alt);
         return img;
     };
-    var position = document.getElementsByClassName("_1cwz")[0];
-    if(!position) position = createPosition("_673w");
-    var div = $('<div/>', {id: 'showHideButton'});
-    var openUrl = GM_getResourceURL('openImg');
-    var closeUrl = GM_getResourceURL('closeImg');
-    var img = '<img src="${src}" alt="${alt}" height="30" width="30" style="filter: invert(1);">';
-    $(div).prepend(createImage(img, openUrl, 'Hide Sidebar'));
-    $(position).prepend(div);
-    $("#showHideButton").css({
-        "background-color": "#0084ff",
-        "color": "#FFFFFF",
-        "left":60,
-        "z-index":1000,
-        "border-radius":"1.3em",
-        "font-size": "12px",
-        //"box-shadow": "0px 0px 16px 0px black",
-        "border-style": "none",
-        "padding": "6px"
-    });
-    $("#showHideButton").click(function(){
-        var convThreads = document.getElementsByClassName("_1enh")[0];
-        if(convThreads.style.display == 'none'){
-            convThreads.style.display = 'block';
-           $("#showHideButton").html(createImage(img, openUrl, 'Hide Sidebar'));
-        }else {
-            convThreads.style.display = 'none';
-            $("#showHideButton").html(createImage(img, closeUrl, 'Show Sidebar'));
-        }
-    });
+    var createShowHideButton = function() {
+       var position = document.getElementsByClassName("_1cwz")[0];
+       if(!position) position = createPosition("_673w");
+       var div = $('<div/>', {id: 'showHideButton'});
+       var openUrl = GM_getResourceURL('openImg');
+       var closeUrl = GM_getResourceURL('closeImg');
+       var img = '<img src="${src}" alt="${alt}" height="30" width="30" style="filter: invert(1);">';
+       $(div).prepend(createImage(img, openUrl, 'Hide Sidebar'));
+       $(position).prepend(div);
+       $("#showHideButton").css({
+           "background-color": "#0084ff",
+           "color": "#FFFFFF",
+           "left":60,
+           "z-index":1000,
+           "border-radius":"1.3em",
+           "font-size": "12px",
+           //"box-shadow": "0px 0px 16px 0px black",
+           "border-style": "none",
+           "padding": "6px"
+       });
+       $("#showHideButton").click(function(){
+           if(convThreads.style.display == 'none'){
+               convThreads.style.display = 'block';
+               $("#showHideButton").html(createImage(img, openUrl, 'Hide Sidebar'));
+           } else {
+               convThreads.style.display = 'none';
+               $("#showHideButton").html(createImage(img, closeUrl, 'Show Sidebar'));
+           }
+       });
+    }
+    createShowHideButton();
 });
